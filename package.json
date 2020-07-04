@@ -1,0 +1,22 @@
+{
+  "name": "fully_persistent_array",
+  "version": "1.0.0",
+  "description": "Persistent Array data structure",
+  "main": "persistentArray.js",
+  "scripts": {
+    "test": "istanbul cover --include-all-sources jasmine"
+  },
+  "keywords": [
+    "functional",
+    "js",
+    "persistent",
+    "array"
+  ],
+  "author": "GuiBrandt",
+  "license": "zlib",
+  "devDependencies": {
+    "benchmark": "^2.1.4",
+    "istanbul": "^0.4.5",
+    "jasmine": "^3.5.0"
+  }
+}
