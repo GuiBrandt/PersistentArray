@@ -1,8 +1,12 @@
 {
-  "name": "fully_persistent_array",
+  "name": "@guibrandt/persistent-array",
   "version": "0.1.0",
   "description": "Persistent Array data structure",
   "main": "persistentArray.js",
+  "repository": "git@github.com:GuiBrandt/PersistentArray.git",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "scripts": {
     "test": "istanbul cover --include-all-sources jasmine"
   },
