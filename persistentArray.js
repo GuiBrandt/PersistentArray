@@ -3,7 +3,7 @@
  */
 class PersistentArray {
     /**
-     * Creates an uninitialized array of size n.
+     * Creates an uninitialized persistent array of size n.
      * 
      * @param {Integer} n - The initial array size.
      */
@@ -13,7 +13,7 @@ class PersistentArray {
     }
 
     /**
-     * Create and return an array from an array-like.
+     * Create and return a persistent array from an array-like.
      * 
      * Mutation to the elements of the original array-like WILL affect the
      * persistent array.
@@ -31,7 +31,7 @@ class PersistentArray {
     }
 
     /**
-     * Create and return an array with the given elements.
+     * Create and return a persistent array with the given elements.
      * 
      * @param  {...any} elements - Desired elements.
      */
@@ -85,7 +85,8 @@ class PersistentArray {
     }
 
     /**
-     * Returns an updated copy of the array.
+     * Returns a new version of the array updated with the given value at the
+     * given index.
      * 
      * @param {Integer} index - Array index at which to update.
      * @param {any} value - The value to be put into the array.
@@ -106,13 +107,30 @@ class PersistentArray {
             return updated;
         }
     }
-    
-    [Symbol.iterator]() {
-        return this.toArray()[Symbol.iterator]();
-    }
 
+    /**
+     * Returns a string representation of the array and its elements.
+     * 
+     * @return {String} The array as a string.
+     */
     toString() {
         return this.toArray().toString();
+    }
+    
+    /**
+     * Returns a read-only iterator for the array.
+     * 
+     * This will perform a rerooting and create a copy of the cache, which will
+     * then be used to create the iterator.
+     * 
+     * Changes to the objects referenced by the iterator WILL affect the
+     * elements in the persistent array, and may cause unintended results.
+     * 
+     * @returns {Iterator<any>} the iterator for a copy of the cache array of
+     * this version of the persistent array.
+     */
+    [Symbol.iterator]() {
+        return this.toArray()[Symbol.iterator]();
     }
 }
 
