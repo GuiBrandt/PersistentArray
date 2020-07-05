@@ -1,6 +1,7 @@
 # Persistent Array
 
 ![Build Status][build]
+![Documentation][docs]
 
 A persistent data structure is one that accepts updates while keeping
 immutability, by preserving original data and only recording updates, usually
@@ -11,6 +12,7 @@ for fast updates and minimum space usage, keeping reads efficient when done
 many at a time by using shallow binding.
 
 [build]: https://github.com/GuiBrandt/PersistentArray/workflows/Build/badge.svg
+[docs]: https://github.com/GuiBrandt/PersistentArray/workflows/Documentation/badge.svg
 
 ## Characteristics
 
