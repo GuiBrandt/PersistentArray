@@ -144,3 +144,17 @@ describe("Updating at an invalid index", () => {
         expect(() => array.update(array.length + 1, 0)).toThrow(rangeError);
     });
 });
+
+describe("Converting to mutable array", () => {
+    let persistent = PersistentArray.of(1, 2, 3, 4);
+
+    it("preserves elements and order", () => {
+        expect(persistent.toArray()).toEqual([1, 2, 3, 4]);
+    });
+
+    it("does not allow mutating the persistent version", () => {
+        let mutable = persistent.toArray();
+        mutable[1] = 0;
+        expect(persistent.at(1)).toBe(2);
+    });
+});

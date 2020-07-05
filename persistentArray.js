@@ -47,6 +47,16 @@ class PersistentArray {
     }
 
     /**
+     * Reroots the context tree and returns the cache for this array.
+     * 
+     * @returns {any[]} Cache for the array.
+     */
+    toArray() {
+        this._currentNode = reroot(this._currentNode);
+        return Object.assign([], this._currentNode.cache);
+    }
+
+    /**
      * Returns the element at the given index.
      * 
      * Mutation on the returned element WILL affect the persistent array. If
@@ -61,28 +71,21 @@ class PersistentArray {
      */
     at(index) {
         if (index < 0 || index >= this.length) {
-            throw new RangeError("Index must be positive and bounded by array size");
+            throw new RangeError(
+                "Index must be positive and bounded by array size");
         } else {
-            if (!this._currentNode.isRoot() && this._currentNode._index == index) {
+            if (!this._currentNode.isRoot &&
+                this._currentNode._index == index) {
                 return this._currentNode.value;
             } else {
-                return this.cache[index];
+                this._currentNode = reroot(this._currentNode);
+                return this._currentNode.cache[index];
             }
         }
     }
 
     /**
-     * Reroots the context tree and returns the cache for this array.
-     * 
-     * @returns {Array<*>} Cache for the array.
-     */
-    get cache() {
-        this._currentNode = reroot(this._currentNode);
-        return this._currentNode.cache;
-    }
-
-    /**
-     * Returns an updated copy of the array 
+     * Returns an updated copy of the array.
      * 
      * @param {Integer} index - Array index at which to update.
      * @param {any} value - The value to be put into the array.
@@ -94,7 +97,8 @@ class PersistentArray {
      */
     update(index, value) {
         if (index < 0 || index >= this.length) {
-            throw new RangeError("Index must be positive and bounded by array size");
+            throw new RangeError(
+                "Index must be positive and bounded by array size");
         } else {
             const updated = new PersistentArray;
             updated._length = this.length;
@@ -102,19 +106,13 @@ class PersistentArray {
             return updated;
         }
     }
-
-    /**
-     * @todo documentation.
-     */
+    
     [Symbol.iterator]() {
-        return this.cache[Symbol.iterator]();
+        return this.toArray()[Symbol.iterator]();
     }
 
-    /**
-     * @todo documentation.
-     */
     toString() {
-        return this.cache.toString();
+        return this.toArray().toString();
     }
 }
 
@@ -126,7 +124,7 @@ class Node {
     }
 
     get cache() {
-        if (this.isRoot()) {
+        if (this.isRoot) {
             return this._parent;
         } else {
             return undefined;
@@ -137,31 +135,34 @@ class Node {
     get index() { return this._index; }
     get value() { return this._value; }
 
-    isRoot() {
+    get isRoot() {
         return this.parent instanceof Array;
     }
 }
 
 function reroot(node) {
-    if (node.isRoot())
+    if (node.isRoot)
         return node;
     else
         return rotate(node);
 }
 
+function swapRoot(parent, node) {
+    const updateIndex = node.index;
+    const cache = parent.parent;
+    
+    parent._index = updateIndex;
+    parent._value = parent.cache[updateIndex];
+    parent._parent = node;
+
+    node._parent = cache;
+    cache[updateIndex] = node.value;
+}
+
 function rotate(node) {
     const parent = node.parent;
-    if (parent.isRoot()) {
-        const index = node.index;
-        const cache = parent.parent;
-        
-        parent._index = index;
-        parent._value = parent.cache[index];
-        parent._parent = node;
-
-        node._parent = cache;
-        cache[index] = node.value;
-
+    if (node.parent.isRoot) {
+        swapRoot(parent, node);
         return node;
     } else {
         node.parent = rotate(parent);

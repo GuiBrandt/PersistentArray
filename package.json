@@ -1,6 +1,6 @@
 {
   "name": "fully_persistent_array",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Persistent Array data structure",
   "main": "persistentArray.js",
   "scripts": {
@@ -17,6 +17,7 @@
   "devDependencies": {
     "benchmark": "^2.1.4",
     "istanbul": "^0.4.5",
-    "jasmine": "^3.5.0"
+    "jasmine": "^3.5.0",
+    "jsdoc": "^3.6.4"
   }
 }
